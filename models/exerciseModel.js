@@ -2,11 +2,7 @@ import mongoose from "mongoose";
 const { Schema, model } = mongoose;
 
 const exerciseSchema = new Schema({
-  username: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+  userId: { type: Schema.Types.ObjectId, ref: "User" },
   description: {
     type: String,
     required: true,
@@ -17,7 +13,7 @@ const exerciseSchema = new Schema({
   },
   date: {
     type: Date,
-    required: true,
+    required: false,
   },
 });
 
