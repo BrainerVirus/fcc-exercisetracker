@@ -2,26 +2,32 @@ import "../db/db.js";
 import Excercise from "../models/exerciseModel.js";
 
 export const createExercise = async (req, res) => {
-  const { username, _id } = req.user;
-  const { description, duration, date } = req.body;
-  const data = {
-    userId: _id,
-    description: description,
-    duration: duration,
-    date: date
-      ? new Date(date).toDateString()
-      : new Date(Date.now()).toDateString(),
-  };
-  const exercise = await Excercise.create(data);
-  res.json({
-    username: username,
-    description: description,
-    duration: duration,
-    date: date
-      ? new Date(date).toDateString()
-      : new Date(Date.now()).toDateString(),
-    _id: _id,
-  });
+  try {
+    const { username, _id } = req.user;
+    const { description, date } = req.body;
+    const duration = parseInt(req.body.duration);
+    const data = {
+      userId: _id,
+      description: description,
+      duration: duration,
+      date: date
+        ? new Date(date).toDateString()
+        : new Date(Date.now()).toDateString(),
+    };
+    const exercise = await Excercise.create(data);
+    res.json({
+      username: username,
+      description: description,
+      duration: duration,
+      date: date
+        ? new Date(date).toDateString()
+        : new Date(Date.now()).toDateString(),
+      _id: _id,
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({ error });
+  }
 };
 
 export const getExercises = async (req, res) => {
